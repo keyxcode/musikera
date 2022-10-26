@@ -1,0 +1,109 @@
+{% extends "composers/layout.html" %}
+{% load static %}
+
+{% block body %}
+<!-- Composer info -->
+<div class="text-center">
+    <div class="h2 text-center fst-italic mb-3 epoch-name">{{ composer.epoch }}</div>
+    <hr class="w-25 mx-auto mb-3">
+    <img class="img-thumbnail rounded-circle w-50 mb-3 composer-thumbnail" src="{{ composer.portrait }}">
+    <div data-composer-id="{{ composer.composer_id }}" id="composer">
+        <a href="https://en.wikipedia.org/wiki/{{ composer.complete_name }}" target=”_blank”>{{ composer.complete_name }}</a> 
+    </div>
+    <h5 class="mb-5">
+        {% if composer.death is None %}
+        <span class="badge border">{{ composer.birth|date:'Y' }} - present</span>
+        {% else %}
+        <span class="badge border">{{ composer.birth|date:'Y'}} - {{ composer.death|date:'Y' }}</span>
+        {% endif %}
+    </h5>
+</div>
+
+<div class="row">
+    <!-- Works filter -->
+    <div class="col-auto">
+        <select class="custom-select form-select w-auto" id="select-works">
+            <option selected disabled>Select Works</option>
+            <option value="work">All works</option>
+            <option value="popular">Popular</option>
+            <option value="recommended">Recommended</option>
+        </select>
+    </div>
+    <!-- Pick random work -->
+    <div class="col mt-auto">
+        <button class="btn btn-light w-auto" id="discover-work">Pick a random work</button>
+    </div>
+</div>
+
+<!-- Works info -->
+<div id="works-list">
+    {% for genre in genres %}
+    <div class="mt-3 genre-div" id="div-{{ genre.id }}">
+        <!-- Genre collapse anchor title -->    
+        <a class="h2 fst-italic epoch-name" data-bs-toggle="collapse" href="#collapse-{{ genre.id }}" id="genre-{{genre.id}}">
+            <div>
+                {{ genre.genre }}
+                <span>
+                    <button type="button" class="ms-0 btn bg-transparent border-0 btn-secondary dropdown-toggle"></button>
+                </span>
+            </div>
+        </a>
+        <!-- Collapsable work list -->
+        <ul class="collapse list-group list-group-flush works" data-genre="{{ genre.id }}" id="collapse-{{ genre.id }}">
+            {% for work in works %}
+                {% if work.genre == genre %}
+                <li class="list-group-item bg-transparent list-group-mine work
+                {% if work.is_popular %} popular {% endif %}
+                {% if work.is_recommended %} recommended {% endif %}">
+                    <div class="row">
+                        <div class="col-md-9 order-1 order-md-2">{{ work.title }}</div>
+                        <!-- Search & Like buttons -->
+                        <div class="col-md-3 order-2 order-md-3 h-25 search-buttons">
+                            <div class="row text-center">
+                                <div class="col-3">
+                                    <a href="https://www.google.com/search?q={{composer.complete_name}}%20{{work.title}}" target=”_blank”>
+                                        <img class="img-fluid w-25 search-icon" src="{% static 'composers/images/GG-logo.png' %}">
+                                    </a>
+                                </div>
+                                <div class="col-3">
+                                    <a href="https://www.youtube.com/results?search_query={{composer.complete_name}}%20{{work.title}}" target=”_blank”>
+                                        <img class="img-fluid w-25 search-icon" src="{% static 'composers/images/YT-logo.png' %}">
+                                    </a>
+                                </div>
+                                <div class="col-3">
+                                    <a href="https://open.spotify.com/search/{{composer.complete_name}}%20{{work.title}}" target=”_blank”>
+                                        <img class="img-fluid w-25 search-icon" src="{% static 'composers/images/Spotify-logo.png' %}">
+                                    </a>
+                                </div>
+                                {% if request.user.is_authenticated %}
+                                <div class="col-3">
+                                    <div class="col-md-1 text-center">                                     
+                                        {% if work in user_liked_works %}
+                                        <button class="bg-transparent border-0 like-button liked" data-work="{{ work.id }}"><i class="fa-solid fa-heart"></i></button>
+                                        {% else %}
+                                        <button class="bg-transparent border-0 like-button" data-work="{{ work.id }}"><i class="fa-regular fa-heart"></i></button>
+                                        {% endif %}
+                                    </div> 
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li> 
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <hr class="text-center">
+    </div>
+    {% endfor %}
+</div>
+    
+<!-- Error message -->
+<div class="my-3 d-none fst-italic" id="message">{{ composer.complete_name }} doesn't have any <span id="work-type"></span> works.</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'composers/composer.js' %}"></script>
+<script src="{% static 'composers/like.js' %}"></script>
+{% endblock %}

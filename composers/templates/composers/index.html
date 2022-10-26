@@ -1,0 +1,112 @@
+{% extends "composers/layout.html" %}
+{% load static %}
+
+{% block sidebar %}
+<!-- Sidebar Filters -->
+<div class="w-50 position-fixed ms-3 flex-column" id="sidebar-div">
+    <div class="col-md-3 col-7" id="sidebar">
+        <!-- Composer type filter -->
+        <div class="mb-3">
+            <select class="custom-select form-select p-2" id="composer-type">
+                <option value="composer" selected>All composers</option>
+                <option value="popular">Popular</option>
+                <option value="recommended">Recommended</option>
+            </select>
+        </div>
+        <!-- Epoch filter -->
+        <div class="mb-3">
+            <select class="custom-select form-select p-2" id="epoch-type">
+                <option value="epoch">All eras</option>
+                {% for epoch in epochs %}
+                <option value="epoch-{{ epoch.id }}">{{ epoch }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <!-- Genre filter -->
+        <div class="mb-3">
+            <select class="custom-select form-select p-2" id="genre-type">
+                <option value="genre">All genres</option>
+                {% for genre in genres %}
+                <option value="genre-{{ genre.id }}">{{ genre.genre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <!-- Reset button -->
+        <div class="mb-3">
+            <button class="btn btn-light w-100" id="reset-filters">Reset Filters</button>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+{% for epoch, composers in epoch_composers_dict.items %}
+<div class="d-flex flex-column">
+    <div class="epoch epoch-{{ epoch.id }}">
+        <!-- Epoch name -->
+        <div class="h2 text-center fst-italic mt-5 mb-3 epoch-name">{{ epoch }}</div>
+        <hr class="w-25 mx-auto mb-5">
+        <div class="mb-3 fst-italic text-center d-none epoch-none-message">No composer in the {{ epoch }} era meets the criteria.</div>
+
+        <!-- List of composers in this epoch -->
+        {% for composer in composers %}
+            <!-- Item begin -->
+                <div class="row d-flex composer genre
+                {{ forloop.counter}}
+                {% if forloop.counter|divisibleby:'2' %} flex-row-reverse {% else %} flex-row {% endif %}
+                {% if composer.is_popular %} popular {% endif %}
+                {% if composer.is_recommended %} recommended {% endif %}
+                {% for genre in composer.genres.all %} genre-{{ genre.id }} {% endfor %}">
+                    <!--Composer-->
+                    <div class="col-md-5 text-center">
+                        <a href="{% url 'composer' composer.composer_id %}">
+                            <img src="{{ composer.portrait }}" class="bright-shadow img-thumbnail rounded-circle mb-3">
+                            <!-- Time & Name Badge -->
+                            <div class="text-center">
+                                <span>{{ composer.complete_name }}</span>
+                                <!-- Only visible small screen < md -->
+                                <h5 class="d-md-none mb-5">
+                                    {% if composer.death is None %}
+                                    <span class="badge border">{{ composer.birth|date:'Y' }} - present</span>
+                                    {% else %}
+                                    <span class="badge border">{{ composer.birth|date:'Y'}} - {{ composer.death|date:'Y' }}</span>
+                                    {% endif %}
+                                </h5>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Timeline Spine only visible big screen > md -->
+                    <div class="col-md-2 flex-column">
+                        <!-- Top line-->
+                        <div class="row h-30 d-none d-md-flex">
+                            <div class="col border-end">&nbsp;</div>
+                            <div class="col">&nbsp;</div>
+                        </div>
+                        <!-- Time badge -->
+                        <div class="d-flex justify-content-center align-items center">
+                            <h5 class="my-3 text-center d-none d-md-block">
+                                {% if composer.death is None %}
+                                <span class="badge border">{{ composer.birth|date:'Y' }} - present</span>
+                                {% else %}
+                                <span class="badge border">{{ composer.birth|date:'Y'}} - {{ composer.death|date:'Y' }}</span>
+                                {% endif %}
+                            </h5>
+                        </div>
+                        <!-- Bottom line -->
+                        <div class="row h-50 d-none d-md-flex">
+                            <div class="col border-end">&nbsp;</div>
+                            <div class="col">&nbsp;</div>
+                        </div>
+                    </div>
+                </div>
+            <!-- Item end -->
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'composers/index.js' %}"></script>
+{% endblock %}

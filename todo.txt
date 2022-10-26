@@ -1,0 +1,29 @@
+Search tab: search work based on composer/ work's name
+Improve CSS?
+Refactor and clean up the code
+
+Done:
+- Add Google/ YT/ Spotify search result next to work
+- Improve color consistency
+- Fix sidebar bug
+- Make work lists collapsable
+- Discover tab/ I'm feeling lucky button: suggest random composer
+- Pick a random work from a composer's page
+- Make back behavior more consistent for selects
+- Add genre filter in index
+- fix the death year for some modern composers
+- Make all filters play well with each other
+- If logged in can add favorites
+- Add readme
+
+maestroera
+musikera
+mycomposers
+maestrotime
+maestrorecord
+composerbase
+openmaestro
+meetmaestro
+meetmozart
+maestrowiki
+composerwiki

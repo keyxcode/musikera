@@ -1,0 +1,63 @@
+{% extends "composers/layout.html" %}
+{% load static %}
+
+{% block body %}
+    {% if user_liked_works %}
+    <select class="custom-select form-select w-auto mb-3" id="sort-favorites">
+        <option value="time" selected>Recently Added</option>
+        <option value="title">Work Title</option>
+        <option value="composer">Composer Name</option>
+    </select>
+
+    <ul class="list-group list-group-flush works" id="wrapper">
+        {% for work in user_liked_works %}
+        <li class="list-group-item bg-transparent list-group-mine work" data-title="{{ work.title }}" data-composer="{{ work.composer.name }}" data-time="{{ forloop.counter }}">
+            <div class="row">
+                <div class="col-md-7 order-1 order-md-2">{{ work.title }}</div>
+                <div class="col-md-2 order-1 order-md-2"><a href="{% url 'composer' work.composer.composer_id %}">{{ work.composer.name }}</a></div>
+                <!-- Search & Like buttons -->
+                <div class="col-md-3 order-2 order-md-3 h-25 search-buttons">
+                    <div class="row text-center">
+                        <div class="col-3">
+                            <a href="https://www.google.com/search?q={{composer.complete_name}}%20{{work.title}}" target=”_blank”>
+                                <img class="img-fluid w-25 search-icon" src="{% static 'composers/images/GG-logo.png' %}">
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            <a href="https://www.youtube.com/results?search_query={{composer.complete_name}}%20{{work.title}}" target=”_blank”>
+                                <img class="img-fluid w-25 search-icon" src="{% static 'composers/images/YT-logo.png' %}">
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            <a href="https://open.spotify.com/search/{{composer.complete_name}}%20{{work.title}}" target=”_blank”>
+                                <img class="img-fluid w-25 search-icon" src="{% static 'composers/images/Spotify-logo.png' %}">
+                            </a>
+                        </div>
+                        {% if request.user.is_authenticated %}
+                        <div class="col-3">
+                            <div class="col-md-1 text-center">
+                                {% if work in user_liked_works %}
+                                <button class="bg-transparent border-0 like-button liked" data-work="{{ work.id }}"><i class="fa-solid fa-heart"></i></button>
+                                {% else %}
+                                <button class="bg-transparent border-0 like-button" data-work="{{ work.id }}"><i class="fa-regular fa-heart"></i></button>
+                                {% endif %}
+                            </div> 
+                        </div>  
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </li> 
+        {% endfor %}
+    </ul>
+    <hr class="text-center">
+    </div>
+    {% else %}
+    <div class="my-3 fst-italic">Your favorite list is currently empty. "Like" a piece for it to show up here.</div>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'composers/favorites.js' %}"></script>
+<script src="{% static 'composers/like.js' %}"></script>
+{% endblock %}
