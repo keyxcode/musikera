@@ -1,0 +1,172 @@
+/* Global */
+:root {
+    --darkest: #14110F;
+    --dark: #34312D;
+    --mid: #7E7F83;
+    --light: #D9C5B2;
+    --lightest: #F3F3F4;
+    /* https://coolors.co/14110f-34312d-7e7f83-d9c5b2-f3f3f4 */
+}
+
+/*=================================================================*/
+/* Nav & main body */
+body {
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+.navbar, footer {
+    background-color: var(--light);
+    color: var(--darkest) !important;
+}
+
+.navbar-brand {
+    color: var(--darkest) !important;
+}
+
+.navbar-brand:hover {
+    color: var(--darkest) !important;
+}
+
+.nav-link {
+    color: var(--dark) !important;
+}
+
+.nav-link:hover {
+    color: var(--mid) !important;
+}
+
+#logged-in-as {
+    color: var(--dark) !important;
+}
+
+#logged-in-as:hover {
+    color: var(--dark) !important;
+}
+
+/*=================================================================*/
+/* Main components */
+.border {
+    border: 1px solid var(--lightest) !important;
+}
+
+.border-end {
+    border-right: 1px solid var(--lightest) !important; 
+}
+
+hr {
+    color: var(--light) !important;
+    opacity: 1 !important;
+}
+
+.badge {
+    background-color: var(--darkest);
+}
+
+.epoch-name {
+    font-family: 'Times New Roman';
+    color: var(--light);
+}
+
+a {
+    text-decoration: none;
+    color: var(--light);
+    transition-duration: 0.2s;
+}
+
+a:hover {
+    color: var(--lightest);
+}
+
+.img-thumbnail {
+    background-color: var(--light);
+    border: 1px solid var(--light) !important;  
+}
+
+.bright-shadow {
+    box-shadow: none;
+    transition-duration: 0.5s;
+}
+
+.bright-shadow:hover {
+    box-shadow: 0 0 1rem var(--mid)!important;
+}
+
+/*=================================================================*/
+/* Buttons & Selects */
+.btn-light {
+    background-color: var(--light);
+    border: var(--dark);
+    color: var(--darkest);
+    --bs-btn-hover-bg: var(--lightest);
+    --bs-btn-hover-color: var(--dark);
+}
+
+.btn-secondary {
+    color: var(--light);
+    --bs-btn-hover-color: var(--lightest);
+}
+
+.custom-select {
+    background: var(--dark) url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='white' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px !important;
+    color: var(--lightest) !important;
+}
+
+/*=================================================================*/
+/* Index */
+#sidebar-div {
+    pointer-events: none; 
+}
+
+#sidebar {
+    pointer-events: auto;
+}
+
+/*=================================================================*/
+/* Composer page */
+.composer-thumbnail {
+    max-width: 275px;
+}
+
+.search-icon {
+    min-width: 15px !important;
+}
+
+.search-buttons img {
+    max-width: 15px; 
+    width: 100%; 
+    height: auto;
+}
+
+.like-button {
+    font-size: 15px;
+    color: var(--light);
+}
+
+.like-button:hover {
+    filter: brightness(150%)
+}
+
+.h-30 {
+    height: 40% !important;
+}
+
+.list-group-mine {
+    color: var(--light);
+    border-color: var(--mid);
+    transition-duration: 0.2s;
+}
+
+.list-group-mine:hover {
+    color: var(--lightest);  
+}
+
+.form-control {
+    background-color: var(--light) !important;
+    color: var(--darkest) !important;
+}
+
+.form-control:focus {
+    background-color: var(--lightest) !important;
+    color: var(--darkest) !important;
+}
